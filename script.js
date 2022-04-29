@@ -42,7 +42,8 @@ class Branch{
     this.length = l;
     this.angle = a;
     this.calculateEndPoint()
-    this.canGrow = this.length > 10
+    this.canGrow = this.length > 10;
+    console.log(`creating new branch,x=${this.startingX},y=${this.startingY}`);
   }
   
   draw(ctx){
@@ -62,8 +63,9 @@ class Branch{
   }
   grow(){
     if(this.canGrow){
-      let rBranch = new Branch (this.endX,this.endY,this.width,this.length * .67,this.angle - 45)
-      let lBranch = new Branch (this.endX,this.endY,this.width,this.length * .67,this.angle + 45)
+      let rBranch = new Branch (this.endX,this.endY,this.width,this.length * .67,this.angle - 45);
+      let lBranch = new Branch (this.endX,this.endY,this.width,this.length * .67,this.angle + 45);
+      this.canGrow = false;
       return [rBranch, lBranch];
     }else{
      /* let  rBranch = new Branch(this.endX,this.endY,this.width,this.length * .067,this.angle - 45)
@@ -80,21 +82,22 @@ class Branch{
 }
 */
 let tree = []
-const oneBranch = new Branch(100,400,5,200,90);
+const oneBranch = new Branch(100,400,5,100,90);
 tree.push(oneBranch)
-let treeCanGrow = true
-let newGrowth = [];
+let treeCanGrow = true;
 while(treeCanGrow){
+  let newGrowth = [];
   tree.forEach(b=>{
-  newGrowth =newGrowth.concat(b.grow())
+    newGrowth =newGrowth.concat(b.grow())
   })
   tree = tree.concat(newGrowth)
+  if(newGrowth.length===0){
+    treeCanGrow = false
+  }else{
+    tree = tree.concat(newGrowth)
+  }
 }
-if(newGrowth.lenth===0){
-  treeCanGrow = false
-}else{
-  tree = tree.concat(newGrowth)
-}
+
 
 
 
